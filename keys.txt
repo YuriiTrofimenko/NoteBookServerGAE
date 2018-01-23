@@ -1,0 +1,6 @@
+Идентификатор проекта
+notebookgae
+
+Ключ API
+AIzaSyB0nTXrCDHuvlK6xeagvkM8aWoMbubLxRM
+
