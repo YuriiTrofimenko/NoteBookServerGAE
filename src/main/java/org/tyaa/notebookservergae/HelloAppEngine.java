@@ -61,8 +61,6 @@ public class HelloAppEngine extends HttpServlet {
             	case "get_order" : {
                 
                     String idString = request.getParameter("id");
-                    //Order1 order =// DAO.getOrder(idString);
-                    		//ofy().load().type(Order1.class).id(Long.valueOf(idString)).now();
                     Order1 order = new Order1();
                     ObjectifyService.run(new VoidWork() {
             		    public void vrun() {
@@ -110,24 +108,22 @@ public class HelloAppEngine extends HttpServlet {
                 case "create_order" : {
                 
                     try {
+                    	
                         String customerName = request.getParameter("customer_name");
                         String description = request.getParameter("description");
-                        State state =// DAO.getState("created");
-                        		ofy().load().type(State.class).filter("name", "created").first().now();
                         
-                        if (state == null) {
-                            
-                            out.print(gson.toJson("State not exists"));
-                            break;
-                        }
+                        ObjectifyService.run(new VoidWork() {
+                		    public void vrun() {
+                		    	try {
+									DAO.createOrder(customerName, description);
+								} catch (Exception ex) {
+									
+									String orderJson = gson.toJson(ex.getMessage());
+			                        out.print(orderJson);
+								}
+                		    }
+                		});
                         
-                        Order1 order1 = new Order1();
-                        order1.setCustomer(customerName);
-                        order1.setText(description);
-                        order1.setDate(new Date());
-                        order1.setStateId(state.getId());
-                        //DAO.saveOrder(order1);
-                        ofy().save().entity(order1).now();
                         out.print(gson.toJson("ok"));
                     } catch (Exception ex) {
                     	
@@ -136,35 +132,60 @@ public class HelloAppEngine extends HttpServlet {
                         out.print(orderJson);
                     }
                 }
+                case "update_order" : {
+                    
+                    try {
+                    	
+                    	String idString = request.getParameter("id");
+                        String customerName = request.getParameter("customer_name");
+                        String description = request.getParameter("description");
+                        
+                        ObjectifyService.run(new VoidWork() {
+                		    public void vrun() {
+                		    	try {
+									DAO.updateOrder(idString, customerName, description);
+								} catch (Exception ex) {
+									
+									String orderJson = gson.toJson(ex.getMessage());
+			                        out.print(orderJson);
+								}
+                		    }
+                		});
+                        
+                        out.print(gson.toJson("ok"));
+                    } catch (Exception ex) {
+                    	
+                    	String orderJson = gson.toJson(ex.getMessage());
+                        out.print(orderJson);
+                    }
+                }
+            	case "delete_order" : {
+                    
+                    try {
+                    	
+                    	String idString = request.getParameter("id");
+                        
+                        ObjectifyService.run(new VoidWork() {
+                		    public void vrun() {
+                		    	try {
+									DAO.deleteOrder(idString);
+								} catch (Exception ex) {
+									
+									String orderJson = gson.toJson(ex.getMessage());
+			                        out.print(orderJson);
+								}
+                		    }
+                		});
+                        
+                        out.print(gson.toJson("ok"));
+                    } catch (Exception ex) {
+                    	
+                    	String orderJson = gson.toJson(ex.getMessage());
+                        out.print(orderJson);
+                    }
+                }
             }
     	}
     }
-    
-    /*Order1 o = new Order1();
-    o.setCustomer("cmr1");
-    o.setText("task1");
-    o.setStateId(1L);
-    o.setDate(new Date());
-    
-    Order1 o2 = new Order1();
-    o2.setCustomer("cmr2");
-    o2.setText("task2");
-    o2.setStateId(1L);
-    o2.setDate(new Date());
-    
-    //String orderJson = g.toJson(o);
-    
-    List<Order1> orders = new ArrayList();
-    orders.add(o);
-    orders.add(o2);
-    
-    Orders ordersModel = new Orders(orders);
-    
-    String orderJson = g.toJson(ordersModel);
-    
-    out.print(orderJson);
-    
-    //out.print("Hello App Engine!\r\n");*/
-
   }
 }
