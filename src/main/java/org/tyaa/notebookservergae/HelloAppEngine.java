@@ -131,6 +131,7 @@ public class HelloAppEngine extends HttpServlet {
                     	String orderJson = gson.toJson(ex.getMessage());
                         out.print(orderJson);
                     }
+                    break;
                 }
                 case "update_order" : {
                     
@@ -158,6 +159,7 @@ public class HelloAppEngine extends HttpServlet {
                     	String orderJson = gson.toJson(ex.getMessage());
                         out.print(orderJson);
                     }
+                    break;
                 }
             	case "delete_order" : {
                     
